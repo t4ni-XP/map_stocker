@@ -6,7 +6,7 @@ export default function Footer() {
       <Box p={3} m={1}>
         <Divider />
         <Typography align="center" mt={2}>
-          &copy; 2025 MapStocker
+          &copy; 2025 - MapStocker
         </Typography>
       </Box>
     </Box>
