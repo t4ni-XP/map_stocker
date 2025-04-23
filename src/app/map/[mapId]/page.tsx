@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 
-export default async function MapId({ params }: { params: { mapId: string } }) {
+export default async function MapId({ params }: any) {
   const { mapId } = params;
   const mapData = await prisma.mapImage.findFirst({
     select: {
