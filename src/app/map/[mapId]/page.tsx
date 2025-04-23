@@ -1,7 +1,8 @@
 import MapDataRender from "@/components/mapDataRender";
-import { Box, Grid, Stack, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 
 export default async function MapId({ params }: { params: { mapId: string } }) {
   const { mapId } = params;
@@ -27,7 +28,7 @@ export default async function MapId({ params }: { params: { mapId: string } }) {
         <Grid container spacing={2} style={{ margin: "0 auto" }}>
           <Grid size={6}>
             <Box>
-              <img src={mapData.imageUrl} style={{ width: "100%" }} />
+              <Image alt="画像" src={mapData.imageUrl} style={{ width: "100%" }} />
             </Box>
           </Grid>
           <Grid size={6}>
