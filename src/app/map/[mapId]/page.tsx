@@ -3,9 +3,10 @@ import { Box, Grid, Typography } from "@mui/material";
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import { PageProps } from "../../../../.next/types/app/layout";
 
-export default async function MapId({ params }) {
-  const { mapId } = params;
+export default async function MapId(props: PageProps) {
+  const { mapId } = await props.params;
   const mapData = await prisma.mapImage.findFirst({
     select: {
       id: true,
