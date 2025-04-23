@@ -34,6 +34,9 @@ yarn-error.log*
 .env
 .env.develop.local
 
+# dev
+/public/images/*
+
 # vercel
 .vercel
 
