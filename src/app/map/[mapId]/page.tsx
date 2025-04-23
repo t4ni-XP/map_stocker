@@ -1,7 +1,42 @@
-"use client";
+import MapDataRender from "@/components/mapDataRender";
+import { Box, Grid, Stack, Typography } from "@mui/material";
+import prisma from "@/lib/prisma";
+import { notFound } from "next/navigation";
 
-import { Box } from "@mui/material";
+export default async function MapId({ params }: { params: { mapId: string } }) {
+  const { mapId } = params;
+  const mapData = await prisma.mapImage.findFirst({
+    select: {
+      id: true,
+      eventName: true,
+      imageUrl: true,
+      comment: true,
+    },
+    where: { id: mapId as string },
+  });
 
-export default function MapForm() {
-  return <Box m={3} sx={{ maxWidth: "md", margin: "auto" }}></Box>;
+  if (!mapData) {
+    notFound();
+  }
+
+  return (
+    <>
+      <Box sx={{ maxWidth: "lg" }} style={{ margin: "0 auto" }}>
+        {/* <Typography>id:{mapId}</Typography> */}
+        <Typography variant="h3">イベント名:{mapData.eventName}</Typography>
+        <Grid container spacing={2} style={{ margin: "0 auto" }}>
+          <Grid size={6}>
+            <Box>
+              <img src={mapData.imageUrl} style={{ width: "100%" }} />
+            </Box>
+          </Grid>
+          <Grid size={6}>
+            <Typography variant="body2">コメント:{mapData.comment}</Typography>
+          </Grid>
+        </Grid>
+
+        <MapDataRender />
+      </Box>
+    </>
+  );
 }
