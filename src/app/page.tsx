@@ -1,24 +1,19 @@
-// src/app/page.tsx
-"use client";
-
-import dynamic from "next/dynamic";
+// src/app/page.tsx  （サーバーコンポーネント）
 import { Box } from "@mui/material";
+import prisma from "@/lib/prisma";
+import MapSection from "@/components/MapSection";
 
-const LeafletMap = dynamic(() => import("@/components/LeafletMap"), {
-  ssr: false,
-});
+export const dynamic = "force-dynamic";
 
-export default function Home() {
+export default async function Home() {
+  const positions = await prisma.mapLocation.findMany({
+    select: { id: true, lat: true, lng: true },
+  });
+
   return (
-    <Box
-      sx={{
-        width: "100%",
-        height: "80vh", // ここで高さを決める
-        maxWidth: "lg",
-        mx: "auto",
-      }}
-    >
-      <LeafletMap />
+    <Box sx={{ width: "100%", height: "80vh", maxWidth: "lg", mx: "auto" }}>
+      {/* クライアントコンポーネントをここでレンダー */}
+      <MapSection positions={positions} />
     </Box>
   );
 }
