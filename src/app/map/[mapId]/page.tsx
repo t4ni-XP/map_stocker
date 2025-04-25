@@ -1,3 +1,4 @@
+import React from "react";
 import MapDataRender from "@/components/mapDataRender";
 import { Box, Grid, Typography } from "@mui/material";
 import prisma from "@/lib/prisma";
@@ -25,11 +26,25 @@ export default async function MapId(props: PageProps) {
     <>
       <Box sx={{ maxWidth: "lg" }} style={{ margin: "0 auto" }}>
         {/* <Typography>id:{mapId}</Typography> */}
-        <Typography variant="h3">イベント名:{mapData.eventName}</Typography>
+        <Typography mt={2} variant="h3">
+          イベント名:{mapData.eventName}
+        </Typography>
         <Grid container spacing={2} style={{ margin: "0 auto" }}>
           <Grid size={6}>
-            <Box>
-              <Image alt="画像" src={mapData.imageUrl} style={{ width: "100%" }} />
+            <Box
+              ml={1}
+              sx={{
+                position: "relative", // ← これが必須
+                width: "100%",
+                height: 400, // ← お好みの高さを(px)で指定
+              }}
+            >
+              <Image
+                src={mapData.imageUrl}
+                alt="地図画像"
+                fill // 親の領域いっぱいに広がる
+                style={{ objectFit: "contain" }} // 縦横比を保って収まる
+              />
             </Box>
           </Grid>
           <Grid size={6}>

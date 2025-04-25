@@ -1,4 +1,5 @@
 // src/layout.tsx
+import React from "react";
 import { ReactNode } from "react";
 import Header from "@/components/Header";
 import MenuBar from "@/components/menuBar";
