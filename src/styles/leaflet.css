@@ -1,0 +1,44 @@
+.leaflet-popup.my-popup .leaflet-popup-content-wrapper {
+    width: 180px !important;
+    height: 150px;
+    overflow-y: auto;
+}
+
+.leaflet-popup.my-popup .leaflet-popup-tip {
+    /* 下の三角部分も含めたいとき */
+    margin-left: 20px;
+}
+
+/* ポップアップ本体をテキスト幅に合わせる */
+.leaflet-popup .leaflet-popup-content-wrapper {
+    /* 中身の幅に合わせて自動で伸縮 */
+    display: inline-block !important;
+    /* 必要なら padding を調整 */
+    /* padding: 4px 8px; */
+}
+
+/* コンテンツ内の不要な改行を抑える */
+.leaflet-popup .leaflet-popup-content {
+    white-space: nowrap;
+}
+
+/* .popup-body をブロック状かつ文字幅に合わせる */
+.popup-body {
+    display: inline-block;
+}
+
+/* リンクは改行しても良いように */
+.popup-body a {
+    display: block;
+    white-space: normal;
+    margin-bottom: 4px;
+}
+
+/* 画像は親幅ぴったり */
+.popup-body img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-top: 4px;
+    border-radius: 4px;
+}

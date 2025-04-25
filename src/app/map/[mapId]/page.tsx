@@ -1,3 +1,4 @@
+import React from "react";
 import MapDataRender from "@/components/mapDataRender";
 import { Box, Grid, Typography } from "@mui/material";
 import prisma from "@/lib/prisma";
@@ -7,12 +8,18 @@ import { PageProps } from "../../../../.next/types/app/layout";
 
 export default async function MapId(props: PageProps) {
   const { mapId } = await props.params;
-  const mapData = await prisma.mapImage.findFirst({
+  const mapData = await prisma.location.findFirst({
     select: {
       id: true,
       eventName: true,
       imageUrl: true,
       comment: true,
+      mapImages: {
+        select: {
+          id: true,
+        },
+        take: 1,
+      },
     },
     where: { id: mapId as string },
   });
