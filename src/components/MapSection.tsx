@@ -10,7 +10,13 @@ const LeafletMap = dynamic(() => import("./LeafletMap"), {
 });
 
 // LeafletMap と同じ型定義を使うと安心です
-type MapLocation = { id: string; name: string; lat: number; lng: number };
+type MapLocation = {
+  id: string;
+  name: string;
+  lat: number;
+  lng: number;
+  mapImages: { id: string; imageUrl: string }[];
+};
 
 export default function MapSection({ mapLocations }: { mapLocations: MapLocation[] }) {
   // LeafletMap が受け取る prop 名は `maps` です
