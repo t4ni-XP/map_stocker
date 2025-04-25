@@ -36,7 +36,7 @@ export default function LeafletMap({ mapLocations }: { mapLocations: MapLocation
         <Marker key={m.id} position={[m.lat, m.lng]}>
           <Popup className="my-popup">
             <div className="popup-body">
-              <Link href={`/map/${m.id}`}>{m.name}</Link>
+              <Link href={`/map/${m.mapImages[0].id}`}>{m.name}</Link>
               <img src={m.mapImages[0]?.imageUrl} alt={m.name} />
             </div>
           </Popup>
