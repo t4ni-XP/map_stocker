@@ -3,6 +3,8 @@ import { Box } from "@mui/material";
 import prisma from "@/lib/prisma";
 import MapSection from "@/components/MapSection";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const positions = await prisma.mapLocation.findMany({
     select: { id: true, lat: true, lng: true },
