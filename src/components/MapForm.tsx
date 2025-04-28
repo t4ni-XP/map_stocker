@@ -3,7 +3,7 @@
 import { TextField, Stack, Button, Box, Typography } from "@mui/material";
 // import { useState } from "react";
 
-export default function MapForm() {
+export default function MapForm(p: any) {
   return (
     <Box m={3} sx={{ maxWidth: "md", margin: "auto" }}>
       <Stack spacing={2} mt={3}>
