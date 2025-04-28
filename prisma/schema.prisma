@@ -21,16 +21,15 @@ model User {
 }
 
 model MapLocation {
-  id          String       @id @default(cuid())
+  id          String     @id @default(cuid())
   name        String
   lat         Float
   lng         Float
   description String?
   userId      String
-  terrainType terrainType? @default(FOREST)
-  createdAt   DateTime     @default(now())
+  createdAt   DateTime   @default(now())
   mapImages   MapImage[]
-  user        User         @relation(fields: [userId], references: [id])
+  user        User       @relation(fields: [userId], references: [id])
 }
 
 model MapImage {
@@ -42,6 +41,7 @@ model MapImage {
   date           DateTime
   comment        String
   memo           String
+  terrainType    terrainType?  @default(FOREST)
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
   userId         String
