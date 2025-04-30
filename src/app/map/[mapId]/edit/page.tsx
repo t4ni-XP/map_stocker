@@ -2,8 +2,12 @@ import MapForm from "@/components/MapForm";
 import prisma from "@/lib/prisma";
 // import { useState } from "react";
 
-export default async function MapEdit({ params }: { params: { mapId: string } }) {
-  const { mapId } = params;
+export default async function MapEdit({
+  params,
+}: {
+  params: { mapId: string } | Promise<{ mapId: string }>;
+}) {
+  const { mapId } = await params;
   const mapImage = await prisma.mapImage.findUnique({
     select: {
       id: true,
