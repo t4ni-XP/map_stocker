@@ -41,7 +41,6 @@ model MapImage {
   date           DateTime
   comment        String
   memo           String
-  terrainType    terrainType?  @default(FOREST)
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
   userId         String
