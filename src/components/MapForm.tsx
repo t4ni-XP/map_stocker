@@ -109,6 +109,7 @@ export default function MapForm({ mapImage }: MapFormProps) {
         <TextField name="date" type="date" />
 
         <Button variant="contained">保存</Button>
+
       </Stack>
     </Box>
   );
