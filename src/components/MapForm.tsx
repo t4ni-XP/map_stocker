@@ -1,26 +1,13 @@
 // src/components/MapForm.tsx
 "use client";
 
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { TextField, Stack, Button, Box, Typography } from "@mui/material";
 import Image from "next/image";
+import { MapImage } from "@/types/prisma";
 
-//
-// サーバーコンポーネントから渡される「地図画像データ」の型
-//
-export type MapImageData = {
-  id: string;
-  eventName: string;
-  imageUrl: string;
-  routedImageUrl: string; // null なら string | null に
-  date: string; // または Date 型でも可
-};
-
-//
-// MapForm が受け取る props の型
-//
 export interface MapFormProps {
-  mapImage: MapImageData;
+  mapImage: MapImage;
 }
 
 export default function MapForm({ mapImage }: MapFormProps) {
@@ -31,14 +18,33 @@ export default function MapForm({ mapImage }: MapFormProps) {
     setPreviewUrl(URL.createObjectURL(file));
   };
 
+  const [title, setTitle] = useState(mapImage.mapLocation?.name || "");
+  const handleTitleChange = (event: any) => {
+    const newTitle = event.target.value;
+    setTitle(newTitle);
+  };
+
   const [eventName, setEventName] = useState(mapImage.eventName || "");
   const handleEventNameChange = (event: any) => {
     const newEventName = event.target.value;
     setEventName(newEventName);
   };
 
+  const [comment, setComment] = useState(mapImage.comment || "");
+  const handleCommentChange = (event: any) => {
+    const newComment = event.target.value;
+    setComment(newComment);
+  };
+
+  const [memo, setMemo] = useState(mapImage.memo || "");
+  const handelMemoChange = (event: any) => {
+    const newMemo = event.target.value;
+    setMemo(newMemo);
+  };
+
   return (
     <Box m={3} sx={{ maxWidth: "md", mx: "auto" }}>
+      <Typography variant="h3">地図登録/変更</Typography>
       <Stack spacing={2} mt={3}>
         <Typography>地図画像*</Typography>
         <Box sx={{ pl: 3 }}>
@@ -68,6 +74,9 @@ export default function MapForm({ mapImage }: MapFormProps) {
         </Box>
 
         <Typography>タイトル*</Typography>
+        <TextField name="title" value={title} onChange={handleTitleChange} fullWidth required />
+
+        <Typography>大会名*</Typography>
         <TextField
           name="eventName"
           value={eventName}
@@ -76,19 +85,28 @@ export default function MapForm({ mapImage }: MapFormProps) {
           required
         />
 
-        <Typography>大会名</Typography>
-        <TextField name="routedImageUrl" defaultValue={mapImage.routedImageUrl} fullWidth />
-
         <Typography>コメント</Typography>
-        <TextField name="comment" multiline rows={4} fullWidth />
+        <TextField
+          name="comment"
+          value={comment}
+          onChange={handleCommentChange}
+          fullWidth
+          multiline
+          rows={4}
+        />
+
+        <Typography>メモ</Typography>
+        <TextField
+          name="memo"
+          value={memo}
+          onChange={handelMemoChange}
+          fullWidth
+          multiline
+          rows={4}
+        />
 
         <Typography>日付</Typography>
-        <TextField
-          name="date"
-          type="date"
-          // defaultValue={mapImage.date.split("T")[0]} // YYYY-MM-DD 部分だけ
-          // InputLabelProps={{ shrink: true }}
-        />
+        <TextField name="date" type="date" />
 
         <Button variant="contained">保存</Button>
       </Stack>

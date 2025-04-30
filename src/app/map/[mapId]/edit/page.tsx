@@ -1,6 +1,5 @@
 import MapForm from "@/components/MapForm";
 import prisma from "@/lib/prisma";
-import { TextField, Stack, Button, Box, Typography, selectClasses } from "@mui/material";
 // import { useState } from "react";
 
 export default async function MapEdit({ params }: { params: { mapId: string } }) {
@@ -12,10 +11,17 @@ export default async function MapEdit({ params }: { params: { mapId: string } })
       imageUrl: true,
       routedImageUrl: true,
       date: true,
+      comment: true,
+      memo: true,
+      tags: true,
+      mapLocation: {
+        select: { name: true },
+      },
     },
     where: {
       id: mapId as string,
     },
   });
+
   return <MapForm mapImage={mapImage} />;
 }
