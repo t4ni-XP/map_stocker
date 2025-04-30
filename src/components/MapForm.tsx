@@ -12,32 +12,32 @@ export interface MapFormProps {
 
 export default function MapForm({ mapImage }: MapFormProps) {
   const [previewUrl, setPreviewUrl] = useState(mapImage.imageUrl || "");
-  const handleMapImageUrl = (event: any) => {
+  const handleMapImageUrl = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
     setPreviewUrl(URL.createObjectURL(file));
   };
 
   const [title, setTitle] = useState(mapImage.mapLocation?.name || "");
-  const handleTitleChange = (event: any) => {
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newTitle = event.target.value;
     setTitle(newTitle);
   };
 
   const [eventName, setEventName] = useState(mapImage.eventName || "");
-  const handleEventNameChange = (event: any) => {
+  const handleEventNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newEventName = event.target.value;
     setEventName(newEventName);
   };
 
   const [comment, setComment] = useState(mapImage.comment || "");
-  const handleCommentChange = (event: any) => {
+  const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newComment = event.target.value;
     setComment(newComment);
   };
 
   const [memo, setMemo] = useState(mapImage.memo || "");
-  const handelMemoChange = (event: any) => {
+  const handelMemoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newMemo = event.target.value;
     setMemo(newMemo);
   };
