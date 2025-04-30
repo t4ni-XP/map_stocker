@@ -1,7 +1,7 @@
 // src/components/MapForm.tsx
 "use client";
 
-import { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { TextField, Stack, Button, Box, Typography } from "@mui/material";
 import Image from "next/image";
 import { MapImage } from "@/types/prisma";
@@ -11,41 +11,40 @@ export interface MapFormProps {
 }
 
 export default function MapForm({ mapImage }: MapFormProps) {
-  const [previewUrl, setPreviewUrl] = useState(mapImage.imageUrl || "");
-  const handleMapImageUrl = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+  // プレビュー用 URL
+  const [previewUrl, setPreviewUrl] = useState<string>(mapImage.imageUrl);
+  const handleMapImageUrl = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (!file) return;
     setPreviewUrl(URL.createObjectURL(file));
   };
 
-  const [title, setTitle] = useState(mapImage.mapLocation?.name || "");
-  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newTitle = event.target.value;
-    setTitle(newTitle);
-  };
+  // タイトル（場所名）
+  const [title, setTitle] = useState<string>(mapImage.mapLocation?.name || "");
+  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
 
-  const [eventName, setEventName] = useState(mapImage.eventName || "");
-  const handleEventNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newEventName = event.target.value;
-    setEventName(newEventName);
-  };
+  // 大会名
+  const [eventName, setEventName] = useState<string>(mapImage.eventName);
+  const handleEventNameChange = (e: ChangeEvent<HTMLInputElement>) => setEventName(e.target.value);
 
-  const [comment, setComment] = useState(mapImage.comment || "");
-  const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newComment = event.target.value;
-    setComment(newComment);
-  };
+  // コメント
+  const [comment, setComment] = useState<string>(mapImage.comment);
+  const handleCommentChange = (e: ChangeEvent<HTMLInputElement>) => setComment(e.target.value);
 
-  const [memo, setMemo] = useState(mapImage.memo || "");
-  const handelMemoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newMemo = event.target.value;
-    setMemo(newMemo);
-  };
+  // メモ
+  const [memo, setMemo] = useState<string>(mapImage.memo || "");
+  const handleMemoChange = (e: ChangeEvent<HTMLInputElement>) => setMemo(e.target.value);
+
+  // 日付（YYYY-MM-DD）
+  const initialDate = mapImage.date.split("T")[0];
+  const [date, setDate] = useState<string>(initialDate);
+  const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => setDate(e.target.value);
 
   return (
     <Box m={3} sx={{ maxWidth: "md", mx: "auto" }}>
       <Typography variant="h3">地図登録/変更</Typography>
       <Stack spacing={2} mt={3}>
+        {/* 画像アップロード */}
         <Typography>地図画像*</Typography>
         <Box sx={{ pl: 3 }}>
           <input
@@ -73,6 +72,7 @@ export default function MapForm({ mapImage }: MapFormProps) {
           </label>
         </Box>
 
+        {/* 各種 TextField */}
         <Typography>タイトル*</Typography>
         <TextField name="title" value={title} onChange={handleTitleChange} fullWidth required />
 
@@ -99,17 +99,16 @@ export default function MapForm({ mapImage }: MapFormProps) {
         <TextField
           name="memo"
           value={memo}
-          onChange={handelMemoChange}
+          onChange={handleMemoChange}
           fullWidth
           multiline
           rows={4}
         />
 
         <Typography>日付</Typography>
-        <TextField name="date" type="date" />
+        <TextField name="date" type="date" value={date} onChange={handleDateChange} />
 
         <Button variant="contained">保存</Button>
-
       </Stack>
     </Box>
   );
