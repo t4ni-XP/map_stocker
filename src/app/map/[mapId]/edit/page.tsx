@@ -1,13 +1,12 @@
 import MapForm from "@/components/MapForm";
 import prisma from "@/lib/prisma";
+import { notFound } from "next/navigation";
+import { PageProps } from "../../../../../.next/types/app/layout";
+import { MapImage } from "@/types/prisma";
 // import { useState } from "react";
 
-export default async function MapEdit({
-  params,
-}: {
-  params: { mapId: string } | Promise<{ mapId: string }>;
-}) {
-  const { mapId } = await params;
+export default async function MapEdit(props: PageProps) {
+  const { mapId } = await props.params;
   const mapImage = await prisma.mapImage.findUnique({
     select: {
       id: true,
@@ -17,7 +16,7 @@ export default async function MapEdit({
       date: true,
       comment: true,
       memo: true,
-      tags: true,
+      // tags: true,
       mapLocation: {
         select: { name: true },
       },
@@ -26,6 +25,13 @@ export default async function MapEdit({
       id: mapId as string,
     },
   });
+  if (!mapImage) {
+    notFound();
+  }
+  const formattedMapImage: MapImage = {
+    ...mapImage,
+    date: mapImage.date.toISOString(), // もしくは split("T")[0]
+  };
 
-  return <MapForm mapImage={mapImage} />;
+  return <MapForm mapImage={formattedMapImage} />;
 }

@@ -12,7 +12,7 @@ export interface MapFormProps {
 
 export default function MapForm({ mapImage }: MapFormProps) {
   // プレビュー用 URL
-  const [previewUrl, setPreviewUrl] = useState<string>(mapImage.imageUrl);
+  const [previewUrl, setPreviewUrl] = useState(mapImage.imageUrl);
   const handleMapImageUrl = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -20,24 +20,27 @@ export default function MapForm({ mapImage }: MapFormProps) {
   };
 
   // タイトル（場所名）
-  const [title, setTitle] = useState<string>(mapImage.mapLocation?.name || "");
+  const [title, setTitle] = useState(mapImage.mapLocation?.name || "");
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
 
   // 大会名
-  const [eventName, setEventName] = useState<string>(mapImage.eventName);
+  const [eventName, setEventName] = useState(mapImage.eventName || "");
   const handleEventNameChange = (e: ChangeEvent<HTMLInputElement>) => setEventName(e.target.value);
 
   // コメント
-  const [comment, setComment] = useState<string>(mapImage.comment);
+  const [comment, setComment] = useState(mapImage.comment);
   const handleCommentChange = (e: ChangeEvent<HTMLInputElement>) => setComment(e.target.value);
 
   // メモ
-  const [memo, setMemo] = useState<string>(mapImage.memo || "");
+  const [memo, setMemo] = useState(mapImage.memo || "");
   const handleMemoChange = (e: ChangeEvent<HTMLInputElement>) => setMemo(e.target.value);
 
   // 日付（YYYY-MM-DD）
-  const initialDate = mapImage.date.split("T")[0];
-  const [date, setDate] = useState<string>(initialDate);
+  let initialDate = new Date().toISOString();
+  if (mapImage.date) {
+    initialDate = mapImage.date.split("T")[0];
+  }
+  const [date, setDate] = useState(initialDate);
   const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => setDate(e.target.value);
 
   return (
@@ -57,12 +60,7 @@ export default function MapForm({ mapImage }: MapFormProps) {
           <label htmlFor="map-image">
             {previewUrl ? (
               <Box sx={{ position: "relative", width: "100%", height: 200 }}>
-                <Image
-                  src={previewUrl}
-                  alt={mapImage.eventName}
-                  fill
-                  style={{ objectFit: "contain" }}
-                />
+                <Image src={previewUrl} alt={eventName} fill style={{ objectFit: "contain" }} />
               </Box>
             ) : (
               <Typography sx={{ color: "primary.main", cursor: "pointer" }}>

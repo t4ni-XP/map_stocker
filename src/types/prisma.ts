@@ -40,31 +40,31 @@ export interface User {
 
 // 場所（ピンを打つ地点）
 export interface MapLocation {
-  id: string;
-  name: string;
-  lat: number;
-  lng: number;
+  id?: string;
+  name?: string;
+  lat?: number;
+  lng?: number;
   description?: string;
-  userId: string;
-  createdAt: string;
+  userId?: string;
+  createdAt?: string;
   mapImages?: MapImage[];
   user?: User;
 }
 
 // 地図画像モデル
 export interface MapImage {
-  id: string;
-  eventName: string;
-  mapLocationId: string;
+  id?: string;
+  eventName?: string;
+  mapLocationId?: string;
   imageUrl: string;
   routedImageUrl?: string | null;
-  date: string;
-  comment: string;
-  memo: string;
-  createdAt: string;
-  updatedAt: string;
-  userId: string;
-  terrainType: TerrainType;
+  date?: string;
+  comment?: string;
+  memo?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  userId?: string;
+  terrainType?: TerrainType;
   mapLocation?: MapLocation;
   user?: User;
   tags?: MapImageTag[];
