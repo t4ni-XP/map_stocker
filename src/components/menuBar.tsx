@@ -1,7 +1,10 @@
 import React from "react";
 import { AppBar, Box, Button, Link, Toolbar, Typography } from "@mui/material";
+import { type Session } from "next-auth";
+import { signOut } from "next-auth/react";
+import Image from "next/image";
 
-export default function MenuBar() {
+export default function MenuBar({ session }: { session: Session | null }) {
   return (
     <>
       <Box sx={{ maxWidth: "lg" }} style={{ margin: "0 auto" }}>
@@ -11,7 +14,17 @@ export default function MenuBar() {
               <Typography>MapStocker</Typography>
             </Link>
             <Box sx={{ flexGrow: 0 }}>
-              <Button>Login</Button>
+              {session ? (
+                <Image
+                  src={session.user?.image ?? ""}
+                  alt={session.user?.name ?? ""}
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                />
+              ) : (
+                <Button href="/login">Login</Button>
+              )}
             </Box>
           </Toolbar>
         </AppBar>
