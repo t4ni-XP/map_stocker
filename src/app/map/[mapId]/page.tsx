@@ -1,6 +1,6 @@
 import React from "react";
 import MapDataRender from "@/components/mapDataRender";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -26,9 +26,14 @@ export default async function MapId(props: PageProps) {
     <>
       <Box sx={{ maxWidth: "lg" }} style={{ margin: "0 auto" }}>
         {/* <Typography>id:{mapId}</Typography> */}
-        <Typography mt={2} variant="h3">
-          イベント名:{mapData.eventName}
-        </Typography>
+        <Stack direction={"row"}>
+          <Typography mt={2} variant="h3" flexGrow={1}>
+            イベント名:{mapData.eventName}
+          </Typography>
+          <Button href={`${mapId}/edit`}>
+            <Typography flexGrow={1}>編集</Typography>
+          </Button>
+        </Stack>
         <Grid container spacing={2} style={{ margin: "0 auto" }}>
           <Grid size={6}>
             <Box
