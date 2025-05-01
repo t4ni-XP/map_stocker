@@ -12,30 +12,26 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
-  session: {
-    strategy: "jwt", // ここを string 型ではなく literal 型で
-  },
+  session: { strategy: "jwt" },
   callbacks: {
-    jwt: async ({ token, user, account }) => {
+    // JWT に user.id を sub に、role を custom claim として入れる
+    async jwt({ token, user, account }) {
       if (user) {
-        token.user = user;
-        const u = user;
-        token.role = u.role;
+        token.sub = user.id; // ← ここ！
+        token.role = user.role; // ← ここも！
       }
       if (account) {
         token.accessToken = account.access_token;
       }
       return token;
     },
-    session: ({ session, token }) => {
-      // token.accessToken;
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          role: token.role,
-        },
-      };
+    // Session に sub (＝ user.id) と role を渡す
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.sub!; // ← ここ！
+        session.user.role = token.role as string;
+      }
+      return session;
     },
   },
 };
