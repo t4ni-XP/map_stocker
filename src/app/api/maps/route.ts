@@ -11,7 +11,11 @@ export async function POST(request: Request) {
       date: new Date(data.date),
       comment: data.comment,
       memo: data.memo,
-      userId: data.userId, // セッションから取得
+      user: {
+        connect: {
+          id: data.userId,
+        },
+      },
       mapLocation: { connect: { id: data.locationId } },
       // tags などもここで connect/create
     },

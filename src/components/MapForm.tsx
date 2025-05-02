@@ -1,4 +1,3 @@
-// src/components/MapForm.tsx
 "use client";
 
 import React, { ChangeEvent, useState } from "react";
@@ -6,6 +5,7 @@ import { TextField, Stack, Button, Box, Typography } from "@mui/material";
 import Image from "next/image";
 import { MapImage } from "@/types/prisma";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export interface MapFormProps {
   mapImage?: MapImage;
@@ -13,6 +13,7 @@ export interface MapFormProps {
 
 export default function MapForm({ mapImage }: MapFormProps) {
   // プレビュー用 URL
+  const { data: session } = useSession();
   const router = useRouter();
   const [previewUrl, setPreviewUrl] = useState(mapImage?.imageUrl || "");
   const handleMapImageUrl = (e: ChangeEvent<HTMLInputElement>) => {
@@ -49,10 +50,28 @@ export default function MapForm({ mapImage }: MapFormProps) {
   const handleSave = async () => {
     const res = await fetch("/api/maps", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
-        /* form の各値 */
+        imageUrl: previewUrl,
+        title,
+        eventName,
+        comment,
+        memo,
+        date,
+        userId: session?.user.id,
+        locationId: "cma0m1m2o0000vwfhks9q7nj1",
       }),
     });
+
+    if (!res.ok) {
+      const text = await res.text();
+      console.error("サーバーエラー:", text);
+      alert("保存に失敗しました");
+      return;
+    }
+
     const { id } = await res.json();
     router.push(`/map/${id}/edit`);
   };
