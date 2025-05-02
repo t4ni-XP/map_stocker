@@ -5,14 +5,16 @@ import React, { ChangeEvent, useState } from "react";
 import { TextField, Stack, Button, Box, Typography } from "@mui/material";
 import Image from "next/image";
 import { MapImage } from "@/types/prisma";
+import { useRouter } from "next/navigation";
 
 export interface MapFormProps {
-  mapImage: MapImage;
+  mapImage?: MapImage;
 }
 
 export default function MapForm({ mapImage }: MapFormProps) {
   // プレビュー用 URL
-  const [previewUrl, setPreviewUrl] = useState(mapImage.imageUrl);
+  const router = useRouter();
+  const [previewUrl, setPreviewUrl] = useState(mapImage?.imageUrl || "");
   const handleMapImageUrl = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -20,28 +22,40 @@ export default function MapForm({ mapImage }: MapFormProps) {
   };
 
   // タイトル（場所名）
-  const [title, setTitle] = useState(mapImage.mapLocation?.name || "");
+  const [title, setTitle] = useState(mapImage?.mapLocation?.name || "");
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
 
   // 大会名
-  const [eventName, setEventName] = useState(mapImage.eventName || "");
+  const [eventName, setEventName] = useState(mapImage?.eventName || "");
   const handleEventNameChange = (e: ChangeEvent<HTMLInputElement>) => setEventName(e.target.value);
 
   // コメント
-  const [comment, setComment] = useState(mapImage.comment);
+  const [comment, setComment] = useState(mapImage?.comment || "");
   const handleCommentChange = (e: ChangeEvent<HTMLInputElement>) => setComment(e.target.value);
 
   // メモ
-  const [memo, setMemo] = useState(mapImage.memo || "");
+  const [memo, setMemo] = useState(mapImage?.memo || "");
   const handleMemoChange = (e: ChangeEvent<HTMLInputElement>) => setMemo(e.target.value);
 
   // 日付（YYYY-MM-DD）
   let initialDate = new Date().toISOString();
-  if (mapImage.date) {
+  if (mapImage?.date) {
     initialDate = mapImage.date.split("T")[0];
   }
   const [date, setDate] = useState(initialDate);
   const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => setDate(e.target.value);
+
+  // MapForm 内の保存ボタンハンドラ例
+  const handleSave = async () => {
+    const res = await fetch("/api/maps", {
+      method: "POST",
+      body: JSON.stringify({
+        /* form の各値 */
+      }),
+    });
+    const { id } = await res.json();
+    router.push(`/map/${id}/edit`);
+  };
 
   return (
     <Box m={3} sx={{ maxWidth: "md", mx: "auto" }}>
@@ -106,7 +120,9 @@ export default function MapForm({ mapImage }: MapFormProps) {
         <Typography>日付</Typography>
         <TextField name="date" type="date" value={date} onChange={handleDateChange} />
 
-        <Button variant="contained">保存</Button>
+        <Button variant="contained" onClick={handleSave}>
+          保存
+        </Button>
       </Stack>
     </Box>
   );
