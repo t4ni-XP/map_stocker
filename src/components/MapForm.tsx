@@ -48,21 +48,28 @@ export default function MapForm({ mapImage }: MapFormProps) {
 
   // MapForm 内の保存ボタンハンドラ例
   const handleSave = async () => {
-    const res = await fetch("/api/maps", {
-      method: "POST",
+    // Determine if we are editing an existing map or creating a new one
+    const isEdit = Boolean(mapImage?.id);
+    const endpoint = isEdit ? `/api/maps/${mapImage!.id}` : "/api/maps";
+    const method = isEdit ? "PUT" : "POST";
+
+    const payload = {
+      imageUrl: previewUrl,
+      title,
+      eventName,
+      comment,
+      memo,
+      date,
+      userId: session?.user.id,
+      locationId: mapImage?.mapLocation?.id ?? "cma0m1m2o0000vwfhks9q7nj1",
+    };
+
+    const res = await fetch(endpoint, {
+      method,
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        imageUrl: previewUrl,
-        title,
-        eventName,
-        comment,
-        memo,
-        date,
-        userId: session?.user.id,
-        locationId: "cma0m1m2o0000vwfhks9q7nj1",
-      }),
+      body: JSON.stringify(payload),
     });
 
     if (!res.ok) {
@@ -72,8 +79,9 @@ export default function MapForm({ mapImage }: MapFormProps) {
       return;
     }
 
-    const { id } = await res.json();
-    router.push(`/map/${id}/edit`);
+    const data = await res.json();
+    const targetId = isEdit ? mapImage!.id : (data.id as string);
+    router.push(`/map/${targetId}/edit`);
   };
 
   return (
