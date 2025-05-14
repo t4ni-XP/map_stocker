@@ -1,6 +1,5 @@
 import MapForm from "@/components/MapForm";
 import prisma from "@/lib/prisma";
-import { notFound } from "next/navigation";
 import { PageProps } from "../../../../../.next/types/app/layout";
 import { MapImage } from "@/types/prisma";
 
